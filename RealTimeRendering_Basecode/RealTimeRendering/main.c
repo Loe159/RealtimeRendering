@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 
     // Paramètre initiaux de la caméra
     float camDistance = 7.3f;
+    float angleX = 0.0f;
     float angleY = 0.0f;
 
     float fpsAccu = 0.0f;
@@ -92,6 +93,12 @@ int main(int argc, char *argv[])
             case SDL_MOUSEWHEEL:
                 if(evt.wheel.y > 0) camDistance = fmaxf(0, camDistance-1.f);
                 if(evt.wheel.y < 0) camDistance += 1.f;
+                break;
+            case SDL_MOUSEMOTION:
+                if (evt.button.button == SDL_BUTTON_MIDDLE) {
+                    angleX -= evt.motion.yrel;
+                    angleY -= evt.motion.xrel;
+                }
                 break;
             case SDL_QUIT:
                 quit = true;
@@ -120,13 +127,18 @@ int main(int argc, char *argv[])
             }
         }
 
-        // Calcule la rotation de la caméra
-        angleY -= 360.f / 40.f * Timer_GetDelta(g_time);
+        // // Calcule la rotation de la caméra
+        // angleX -= 360.f / 40.f * Timer_GetDelta(g_time);
+        // angleY -= 360.f / 40.f * Timer_GetDelta(g_time);
 
         // Calcule la matrice locale de la caméra
         Mat4 cameraModel = Mat4_Identity;
         cameraModel = Mat4_MulMM(
             Mat4_GetTranslationMatrix(Vec3_Set(0.f, 0.f, camDistance)),
+            cameraModel
+        );
+        cameraModel = Mat4_MulMM(
+            Mat4_GetXRotationMatrix(angleX),
             cameraModel
         );
         cameraModel = Mat4_MulMM(
