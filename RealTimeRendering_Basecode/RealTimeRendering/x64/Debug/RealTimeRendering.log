@@ -1,0 +1,18 @@
+﻿  Camera.c
+  main.c
+  Material.c
+  Matrix.c
+  Mesh.c
+C:\Users\loedu\Downloads\Rendering_23\Rendering_23\RealTimeRendering_Basecode\RealTimeRendering\main.c(55,10): warning C4101: 'meshCenter' : variable locale non référencée
+  Object.c
+  Graphics.c
+  Renderer.c
+  Scene.c
+  Settings.c
+  Shader.c
+  Tools.c
+  Timer.c
+  Vector.c
+  Window.c
+  Génération de code en cours...
+  RealTimeRendering.vcxproj -> C:\Users\loedu\Downloads\Rendering_23\Rendering_23\RealTimeRendering_Basecode\Bin\RealTimeRendering.exe

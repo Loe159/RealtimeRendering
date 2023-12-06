@@ -1,0 +1,84 @@
+# Blender MTL File: 'None'
+# Material Count: 7
+
+newmtl AccessoryMT
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures/kinopiobrigadeaccessory_alb.png
+map_Nrm Textures/kinopiobrigadeaccessory_nrm.png
+
+newmtl BodyMT.001
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures/kinopiobrigadebody_alb.png
+map_Nrm Textures/kinopiobrigadebody_nrm.png
+
+newmtl EyeMT
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures/kinopioeye_alb.png
+
+newmtl FaceMT
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures/kinopiobrigadeface_alb.png
+
+newmtl GlassMT
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures/kinopiobrigadeaccessory_alb.png
+map_Nrm Textures/kinopiobrigadeaccessory_nrm.png
+
+newmtl HeadMT
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures/kinopiobrigadehead_alb.png
+map_Nrm Textures/kinopiobrigadehead_nrm.png
+
+newmtl RuckMT
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Textures/kinopiobrigaderuck_alb.png
+map_Nrm Textures/kinopiobrigaderuck_nrm.png
