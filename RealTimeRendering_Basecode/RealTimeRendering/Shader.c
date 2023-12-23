@@ -25,6 +25,8 @@ VShaderOut VertexShader_Base(VShaderIn *in, VShaderGlobals *globals)
     // Projection du sommet dans le "clip space"
     Vec4 vertexClipSpace = Mat4_MulMV(globals->objToClip, vertex); // OBLIGATOIRE (ne pas modifier)
 
+    // Transformation de la normale dans le repère monde
+    normal = Mat4_MulMV(globals->objToWorld, vertex);
     // TODO
     // Pour la lumière diffuse, il faut transformer la normale dans le repère monde
     // Pour le modèle de Blinn-Phong, il faut calculer la position du sommet
@@ -73,7 +75,6 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // Recupération de la couleur du pixel dans la texture
     Vec3 albedo = MeshTexture_GetColorVec3(albedoTex, Vec2_Set(u, v));
 
-#if 1
     // Récupère les lumières de la scène
     Vec3 lightVector = Scene_GetLight(globals->scene);
     Vec3 lightColor = Scene_GetLightColor(globals->scene);
@@ -85,13 +86,13 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // Application de la lumière ambiante à l'albedo
     albedo = Vec3_Mul(albedo, ambiant);
 
+    //  Application de la lumière diffuse à l'albedo
     float diffuseCoef = Float_Clamp01(Vec3_Dot(lightVector, normal));
-
     albedo = Vec3_Scale(albedo, diffuseCoef*10);
+    albedo = Vec3_Mul(albedo, lightColor);
 
 
     // TODO
-    // Pour la lumière diffuse, il faut utiliser la normale.
     // Pour la lumière spéculaire de Blinn-Phong, il faut :
     // - récupérer l'interpolation de la position dans le monde du pixel ;
     // - calculer le vecteur de vue, le vecteur moitié
@@ -99,7 +100,6 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // Graphics_RenderTriangle() pour initialiser l'interpolation puis pour
     // calculer l'interpolation.
     // Utilisez les macros VEC3_INIT_INTERPOLATION() et VEC3_INTERPOLATE().
-#endif
 
     //.............................................................................................
     // Quelques exemples de debug (à décommenter)
