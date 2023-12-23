@@ -73,7 +73,7 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // Recupération de la couleur du pixel dans la texture
     Vec3 albedo = MeshTexture_GetColorVec3(albedoTex, Vec2_Set(u, v));
 
-#if 0
+#if 1
     // Récupère les lumières de la scène
     Vec3 lightVector = Scene_GetLight(globals->scene);
     Vec3 lightColor = Scene_GetLightColor(globals->scene);
@@ -84,6 +84,11 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
 
     // Application de la lumière ambiante à l'albedo
     albedo = Vec3_Mul(albedo, ambiant);
+
+    float diffuseCoef = Float_Clamp01(Vec3_Dot(lightVector, normal));
+
+    albedo = Vec3_Scale(albedo, diffuseCoef*10);
+
 
     // TODO
     // Pour la lumière diffuse, il faut utiliser la normale.

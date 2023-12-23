@@ -72,8 +72,11 @@ int main(int argc, char *argv[])
 
     // Paramètre initiaux de la caméra
     float camDistance = 7.3f;
-    float angleX = 0.0f;
-    float angleY = 0.0f;
+    float cameraX = 0.0f;
+    float cameraY = 0.0f;
+
+    float lightY = 0.0f;
+    float lightXZ = 0.0f;
 
     float fpsAccu = 0.0f;
     int frameCount = 0;
@@ -82,6 +85,8 @@ int main(int argc, char *argv[])
     {
         SDL_Event evt;
         SDL_Scancode scanCode;
+        const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
+
 
         // Met à jour le temps global
         Timer_Update(g_time);
@@ -95,9 +100,15 @@ int main(int argc, char *argv[])
                 if(evt.wheel.y < 0) camDistance += 1.f;
                 break;
             case SDL_MOUSEMOTION:
-                if (evt.button.button == SDL_BUTTON_MIDDLE) {
-                    angleX -= evt.motion.yrel;
-                    angleY -= evt.motion.xrel;
+                // Turn around the 3D object
+                if (evt.button.button == SDL_BUTTON_MIDDLE || evt.button.button == SDL_BUTTON_LEFT) {
+                    cameraX -= evt.motion.yrel;
+                    cameraY -= evt.motion.xrel;
+                }
+                // Move the light direction
+                if (keyboardState[SDL_SCANCODE_LCTRL]) {
+                    lightY += evt.motion.yrel * 0.01;
+                    lightXZ += evt.motion.xrel * 0.01;
                 }
                 break;
             case SDL_QUIT:
@@ -127,10 +138,6 @@ int main(int argc, char *argv[])
             }
         }
 
-        // // Calcule la rotation de la caméra
-        // angleX -= 360.f / 40.f * Timer_GetDelta(g_time);
-        // angleY -= 360.f / 40.f * Timer_GetDelta(g_time);
-
         // Calcule la matrice locale de la caméra
         Mat4 cameraModel = Mat4_Identity;
         cameraModel = Mat4_MulMM(
@@ -138,13 +145,23 @@ int main(int argc, char *argv[])
             cameraModel
         );
         cameraModel = Mat4_MulMM(
-            Mat4_GetXRotationMatrix(angleX),
+            Mat4_GetXRotationMatrix(cameraX),
             cameraModel
         );
         cameraModel = Mat4_MulMM(
-            Mat4_GetYRotationMatrix(angleY),
+            Mat4_GetYRotationMatrix(cameraY),
             cameraModel
         );
+
+
+        Vec3 lightDir;
+
+        // Met à jour la direction de la lumière
+        lightDir.x = -cosf(lightXZ);
+        lightDir.y = Float_Clamp(-lightY, -2, 2);
+        lightDir.z = sin(lightXZ);
+
+        Scene_SetLightDirection(scene,Vec3_Normalize(lightDir));
 
         // Applique la matrice locale de la caméra
         Object_SetTransform(((Object *)camera), Scene_GetRoot(scene), cameraModel);
