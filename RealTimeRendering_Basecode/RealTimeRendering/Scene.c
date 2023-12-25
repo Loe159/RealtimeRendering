@@ -44,8 +44,13 @@ Scene *Scene_New(Window *window)
     scene->m_camera = camera;
 
     // Définit les lumières
-    Scene_SetLightDirection(scene, Vec3_Set(0.5, 1.0, 0.5));
-    Scene_SetLightColor(scene, Vec3_Set(0.7f, 0.6f, 0.5f));
+    Light *light = (Light*) calloc(1, sizeof(Light));
+    Scene_SetLight(scene, light);
+
+    Light_SetLightDirection(light, Vec3_Set(0.5, 1.0, 0.5));
+    Light_SetLightColor(light, Vec3_Set(0.7f, 0.6f, 0.5f));
+    Light_SetLightType(light, LIGHT_TYPE_DIFFUSE);
+    Light_SetLightIntensity(light, 10);
     Scene_SetAmbiantColor(scene, Vec3_Set(0.12f, 0.14f, 0.24f));
 
     // Définit les shaders par défaut

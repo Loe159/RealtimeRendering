@@ -213,6 +213,16 @@ Vec3 Vec3_Min(Vec3 v1, Vec3 v2);
 /// @return Le vecteur dont la i-ème composante est le maximum des i-èmes composantes de v1 et v2.
 Vec3 Vec3_Max(Vec3 v1, Vec3 v2);
 
+/// @brief Calcule le vecteur reflexion entre deux vecteurs
+/// \param v le vecteur entrant
+/// \param n la normale
+/// \return Le vecteur reflexion.
+Vec3 Vec3_Reflect(Vec3 v, Vec3 n);
+
+/// \brief Calcule le vecteur opposé
+/// \param v Le vecteur entrant
+/// \return L'opposé du vecteur
+Vec3 Vec3_Opposite(Vec3 v);
 
 //-------------------------------------------------------------------------------------------------
 // Structure Vec4

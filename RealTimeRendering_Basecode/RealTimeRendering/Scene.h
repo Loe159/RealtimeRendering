@@ -13,6 +13,7 @@
 #include "Object.h"
 #include "Graphics.h"
 #include "Shader.h"
+#include "Light.h"
 
 /// @brief Structure représentant une scène 3D.
 /// Contient la racine de l'arbre de scène ainsi qu'une caméra par laquelle la scène sera rendue.
@@ -26,8 +27,7 @@ typedef struct Scene_s
     int m_meshCount;
     int m_meshCapacity;
 
-    Vec3 m_lightDirection;
-    Vec3 m_lightColor;
+    Light *m_light;
     Vec3 m_ambiantColor;
 
     VertexShader *m_defaultVShader;
@@ -124,26 +124,14 @@ INLINE bool Scene_GetWireframe(Scene *scene)
 void Scene_Render(Scene *scene);
 
 //-------------------------------------------------------------------------------------------------
-// Lumières
-
-INLINE void Scene_SetLightDirection(Scene *scene, Vec3 direction)
+INLINE Light *Scene_GetLight(Scene *scene)
 {
-    scene->m_lightDirection = Vec3_Normalize(direction);
+    return scene->m_light;
 }
 
-INLINE Vec3 Scene_GetLight(Scene *scene)
+INLINE void Scene_SetLight(Scene *scene, Light *light)
 {
-    return scene->m_lightDirection;
-}
-
-INLINE void Scene_SetLightColor(Scene *scene, Vec3 color)
-{
-    scene->m_lightColor = Vec3_Clamp01(color);
-}
-
-INLINE Vec3 Scene_GetLightColor(Scene *scene)
-{
-    return scene->m_lightColor;
+    scene->m_light = light;
 }
 
 INLINE void Scene_SetAmbiantColor(Scene *scene, Vec3 color)

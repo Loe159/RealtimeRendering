@@ -67,6 +67,9 @@ int main(int argc, char *argv[])
     objectTransform = Mat4_MulMM(Mat4_GetScaleMatrix(scale), objectTransform);
     Object_SetLocalTransform(object, objectTransform);
 
+    // Obtention des lumières
+    Light *light = Scene_GetLight(scene);
+
     // Lancement du temps global
     Timer_Start(g_time);
 
@@ -128,6 +131,9 @@ int main(int argc, char *argv[])
                 case SDL_SCANCODE_SPACE:
                     Scene_SetWireframe(scene, !Scene_GetWireframe(scene));
                     break;
+                case SDL_SCANCODE_L:
+                    Light_CycleLightType(light);
+                    break;
                 default:
                     break;
                 }
@@ -161,7 +167,7 @@ int main(int argc, char *argv[])
         lightDir.y = Float_Clamp(-lightY, -2, 2);
         lightDir.z = sin(lightXZ);
 
-        Scene_SetLightDirection(scene,Vec3_Normalize(lightDir));
+        Light_SetLightDirection(light,Vec3_Normalize(lightDir));
 
         // Applique la matrice locale de la caméra
         Object_SetTransform(((Object *)camera), Scene_GetRoot(scene), cameraModel);
@@ -186,6 +192,7 @@ int main(int argc, char *argv[])
     Scene_Free(scene);
     Timer_Free(g_time);
     Window_Free(window);
+    Light_Free(light);
 
     Settings_QuitSDL();
 

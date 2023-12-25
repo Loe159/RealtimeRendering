@@ -152,3 +152,14 @@ Vec3 Vec3_From4(Vec4 v)
     }
     return res;
 }
+
+Vec3 Vec3_Reflect(Vec3 v, Vec3 n) {
+    n = Vec3_Normalize(n);
+
+    // Application de la formule de réflexion : R = V - 2 * (V . N) * N
+    return Vec3_Sub(v, Vec3_Scale(n, 2 * Vec3_Dot(v, n)));
+}
+
+Vec3 Vec3_Opposite(Vec3 v) {
+    return Vec3_Scale(v, -1);
+}

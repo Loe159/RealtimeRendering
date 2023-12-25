@@ -54,7 +54,7 @@ typedef struct VShaderOut_s
     // Pour les bonus
 
     /// @brief Position du sommet dans le référentiel monde.
-    //Vec3  worldPos;
+    Vec3  worldPos;
 
     /// @brief Tangente associée au sommet exprimée dans le référentiel monde.
     //Vec3  tangent;
@@ -91,7 +91,9 @@ typedef struct FShaderIn_s
 
     /// @brief Position associée au pixel exprimée dans le référentiel monde.
     /// Nécessaire pour la lumière spéculaire de Blinn-Phong
-    //Vec3 worldPos;
+    Vec3 worldPos;
+
+    float gloss;
 
     /// @brief Tangente associée au pixel exprimée dans le référentiel monde.
     /// Nécessaire pour l'utilisation d'une "normal map".

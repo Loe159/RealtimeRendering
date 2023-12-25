@@ -26,17 +26,17 @@ VShaderOut VertexShader_Base(VShaderIn *in, VShaderGlobals *globals)
     Vec4 vertexClipSpace = Mat4_MulMV(globals->objToClip, vertex); // OBLIGATOIRE (ne pas modifier)
 
     // Transformation de la normale dans le repère monde
-    normal = Mat4_MulMV(globals->objToWorld, vertex);
-    // TODO
-    // Pour la lumière diffuse, il faut transformer la normale dans le repère monde
-    // Pour le modèle de Blinn-Phong, il faut calculer la position du sommet
-    // dans le référentiel monde et ajouter l'information au VShaderOut
+    normal = Mat4_MulMV(globals->objToWorld, normal);
+
+    // Obtention de la position du sommet à partir de la normale
+    Vec3 worldPos = Vec3_From4(Mat4_MulMV(globals->objToWorld, vertex));
 
     // Définit la sortie du vertex shader
     out.clipPos = Vec3_From4(vertexClipSpace);  // OBLIGATOIRE (ne pas modifier)
     out.invDepth = vertexCamSpace.w / vertexCamSpace.z; // OBLIGATOIRE (ne pas modifier)
     out.normal = Vec3_Normalize(Vec3_From4(normal));
     out.textUV = in->textUV;
+    out.worldPos = worldPos;
 
     return out;
 }
@@ -76,8 +76,8 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     Vec3 albedo = MeshTexture_GetColorVec3(albedoTex, Vec2_Set(u, v));
 
     // Récupère les lumières de la scène
-    Vec3 lightVector = Scene_GetLight(globals->scene);
-    Vec3 lightColor = Scene_GetLightColor(globals->scene);
+    Light *light = Scene_GetLight(globals->scene);
+    Vec3 lightColor = Light_GetLightColor(light);
     Vec3 ambiant = Scene_GetAmbiantColor(globals->scene);
 
     // Récupère la normale interpolée (non normalisée)
@@ -86,9 +86,13 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // Application de la lumière ambiante à l'albedo
     albedo = Vec3_Mul(albedo, ambiant);
 
-    //  Application de la lumière diffuse à l'albedo
-    float diffuseCoef = Float_Clamp01(Vec3_Dot(lightVector, normal));
-    albedo = Vec3_Scale(albedo, diffuseCoef*10);
+    in->gloss = 0.7; // TODO Changer le gloss en fonction d'une roughness map
+
+    // Application des lumières diffuse/spéculaires
+    float lightCoef = 1;
+    lightCoef = CalculateLightingCoefficient(light, in, globals->cameraPos);
+    lightCoef *= 50;
+    albedo = Vec3_Scale(albedo, lightCoef);
     albedo = Vec3_Mul(albedo, lightColor);
 
 

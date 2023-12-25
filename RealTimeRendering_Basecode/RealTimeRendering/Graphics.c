@@ -165,6 +165,7 @@ void Graphics_RenderTriangle(
     // Interpolation correcte en perspective
     VEC2_INIT_INTERPOLATION(vShaderO, textUV);
     VEC3_INIT_INTERPOLATION(vShaderO, normal);
+    VEC3_INIT_INTERPOLATION(vShaderO, worldPos);
 
     // Calcule la boîte englobante du triangle
     Vec2 lower = rasterVertices[0];
@@ -204,6 +205,7 @@ void Graphics_RenderTriangle(
             FShaderIn fShaderI = { 0 };
             VEC3_INTERPOLATE(vShaderO, normal,   fShaderI.normal);
             VEC2_INTERPOLATE(vShaderO, textUV,   fShaderI.textUV);
+            VEC2_INTERPOLATE(vShaderO, worldPos,   fShaderI.worldPos);
 
             // FRAGMENT SHADER
             Vec4 color = fragShader(&fShaderI, fragGlobals);
