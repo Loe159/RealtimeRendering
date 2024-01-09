@@ -75,6 +75,17 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // Recupération de la couleur du pixel dans la texture
     Vec3 albedo = MeshTexture_GetColorVec3(albedoTex, Vec2_Set(u, v));
 
+
+    // Récupération de la dureté (roughness) associée au pixel
+    MeshTexture *roughnessTex = Material_GetRoughness(material);
+
+    if (roughnessTex) {
+        // Recupération de la valeur du pixel dans la roughnessMap
+        Vec3 roughness = MeshTexture_GetColorVec3(roughnessTex, Vec2_Set(u, v));
+        in->gloss = 1-roughness.x;
+    }
+    else in->gloss = 0.5;
+
     // Récupère les lumières de la scène
     Light *light = Scene_GetLight(globals->scene);
     Vec3 lightColor = Light_GetLightColor(light);
@@ -86,7 +97,6 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // Application de la lumière ambiante à l'albedo
     albedo = Vec3_Mul(albedo, ambiant);
 
-    in->gloss = 0.7; // TODO Changer le gloss en fonction d'une roughness map
 
     // Application des lumières diffuse/spéculaires
     float lightCoef = 1;

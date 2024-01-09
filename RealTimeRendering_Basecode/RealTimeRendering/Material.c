@@ -13,7 +13,7 @@ Material *Material_LoadMTL(Mesh *mesh, char *path, char *fileName, int *count)
     int materialCapacity = 64;
     char filePathBuffer[1024] = { 0 };
 
-    // Définit le nombre de matériaux à 0 par sécurité
+    // Dï¿½finit le nombre de matï¿½riaux ï¿½ 0 par sï¿½curitï¿½
     *count = 0;
 
     // Charge le fichier dans un buffer
@@ -71,6 +71,21 @@ Material *Material_LoadMTL(Mesh *mesh, char *path, char *fileName, int *count)
             
             materials[index].m_albedoMap = texture;
         }
+        else if (strcmp(word, "map_Ks") == 0)
+        {
+            word = strtok_s(NULL, " ", &context);
+            if (!word) continue;
+
+            strcpy_s(filePathBuffer, 1024, path);
+            strcat_s(filePathBuffer, 1024, "/");
+            strcat_s(filePathBuffer, 1024, word);
+            if (materials[index].m_roughnessMap != NULL) continue;
+
+            MeshTexture *texture = MeshTexture_Load(filePathBuffer);
+            if (!texture) goto ERROR_LABEL;
+
+            materials[index].m_roughnessMap = texture;
+        }
         else if (strcmp(word, "map_Nrm") == 0)
         {
             word = strtok_s(NULL, " ", &context);
@@ -125,7 +140,7 @@ MeshTexture *MeshTexture_Load(char *path)
     assert(surface);
     if (!surface) goto ERROR_LABEL;
 
-    // Vérification du format
+    // Vï¿½rification du format
     SDL_PixelFormat *format = surface->format;
     if (format->format != SDL_PIXELFORMAT_RGBA32)
     {

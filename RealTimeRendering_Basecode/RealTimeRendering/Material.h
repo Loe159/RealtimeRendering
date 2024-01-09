@@ -29,6 +29,7 @@ typedef struct Material_s
 {
     char m_name[MATERIAL_NAME_SIZE];
     MeshTexture *m_albedoMap;
+    MeshTexture *m_roughnessMap;
     MeshTexture *m_normalMap;
 } Material;
 
@@ -38,6 +39,11 @@ void Material_Free(Material *materials, int count);
 INLINE MeshTexture *Material_GetAlbedo(Material *material)
 {
     return material->m_albedoMap;
+}
+
+INLINE MeshTexture *Material_GetRoughness(Material *material)
+{
+    return material->m_roughnessMap;
 }
 
 INLINE MeshTexture *Material_GetNormalMap(Material *material)
