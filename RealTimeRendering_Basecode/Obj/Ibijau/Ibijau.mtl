@@ -9,8 +9,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd claw_t.png
-map_Nrm claw_n.png
+map_Kd Textures/claw_t.png
+map_Nrm Textures/claw_n.png
 
 newmtl Material.002
 Ns 250.000000
@@ -20,8 +20,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd eye_t.png
-map_Nrm eye_n.png
+map_Kd Textures/eye_t.png
+map_Nrm Textures/eye_n.png
 
 newmtl Material.003
 Ns 250.000000
@@ -31,5 +31,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd feathers_t.png
-map_Nrm feathers_n.png
+map_Kd Textures/feathers_t.png
+map_Nrm Textures/feathers_n.png

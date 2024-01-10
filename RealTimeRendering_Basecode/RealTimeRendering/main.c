@@ -35,8 +35,9 @@ int main(int argc, char *argv[])
     if (!scene) goto ERROR_LABEL;
 
     //mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/Jaxy", "Jaxy.obj");
-    mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/CaptainToad", "CaptainToad.obj");
+    // mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/CaptainToad", "CaptainToad.obj");
     // mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/Cube", "Cube.obj");
+    mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/Ibijau", "Ibijau.obj");
     if (!mesh) goto ERROR_LABEL;
 
     // Arbre de scène
