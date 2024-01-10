@@ -63,6 +63,9 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     MeshTexture *albedoTex = Material_GetAlbedo(material);
     assert(albedoTex);
 
+    // Récupération de la texture (normalMap) associée au pixel
+    MeshTexture *normalTex = Material_GetNormalMap(material);
+
     // Récupération des coordonnées (u,v) associée au pixel.
     // Les coordonnées (u,v) sont dans [0,1]^2.
     // - u représente l'abscisse du point sur une texture 2D.
@@ -85,6 +88,11 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
         in->gloss = 1-roughness.x;
     }
     else in->gloss = 0.5;
+
+    if (normalTex && Scene_GetNormal(globals->scene)) {
+        Vec3 normal = MeshTexture_GetColorVec3(normalTex, Vec2_Set(u, v));
+        in->normal = Vec3_Mul(in->normal, normal);
+    }
 
     // Récupère les lumières de la scène
     Light *light = Scene_GetLight(globals->scene);

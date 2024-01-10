@@ -35,6 +35,7 @@ typedef struct Scene_s
 
     bool m_wireframe;
     bool m_roughness;
+    bool m_normal;
 } Scene;
 
 //-------------------------------------------------------------------------------------------------
@@ -134,6 +135,22 @@ INLINE void Scene_SetRoughness(Scene *scene, bool roughness)
 INLINE bool Scene_GetRoughness(Scene *scene)
 {
     return scene->m_roughness;
+}
+
+/// @brief Définit si la scène doit être rendue avec la normal map.
+/// @param[in,out] scene la scène.
+/// @param normal booléen indiquant si la scène doit être rendue avec la normal map.
+INLINE void Scene_SetNormal(Scene *scene, bool normal)
+{
+    scene->m_normal = normal;
+}
+
+/// @brief Renvoie un booléen indiquant si la scène doit être rendue avec la normal map.
+/// @param[in] scene la scène.
+/// @return Un booléen indiquant si la scène doit être rendue avec la normal map.
+INLINE bool Scene_GetNormal(Scene *scene)
+{
+    return scene->m_normal;
 }
 
 /// @brief Calcul le rendu de la scène vue par sa caméra.

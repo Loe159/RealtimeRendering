@@ -139,6 +139,10 @@ int main(int argc, char *argv[])
                     Scene_SetRoughness(scene, !Scene_GetRoughness(scene));
                     printf("Roughness : %d\n", Scene_GetRoughness(scene));
                     break;
+                case SDL_SCANCODE_N:
+                    Scene_SetNormal(scene, !Scene_GetNormal(scene));
+                    printf("Normal : %d\n", Scene_GetNormal(scene));
+                    break;
                 default:
                     break;
                 }
