@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
     if (!scene) goto ERROR_LABEL;
 
     //mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/Jaxy", "Jaxy.obj");
-//    mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/CaptainToad", "CaptainToad.obj");
-    mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/Sphere", "Sphere.obj");
+    mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/CaptainToad", "CaptainToad.obj");
+    // mesh = Scene_CreateMeshFromOBJ(scene, "../Obj/Cube", "Cube.obj");
     if (!mesh) goto ERROR_LABEL;
 
     // Arbre de scène
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
                 case SDL_SCANCODE_L:
                     Light_CycleLightType(light);
                     break;
-                case SDL_SCANCODE_G:
+                case SDL_SCANCODE_R:
                     Scene_SetRoughness(scene, !Scene_GetRoughness(scene));
                     printf("Roughness : %d\n", Scene_GetRoughness(scene));
                     break;
