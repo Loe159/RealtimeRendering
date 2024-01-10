@@ -135,6 +135,10 @@ int main(int argc, char *argv[])
                 case SDL_SCANCODE_L:
                     Light_CycleLightType(light);
                     break;
+                case SDL_SCANCODE_G:
+                    Scene_SetRoughness(scene, !Scene_GetRoughness(scene));
+                    printf("Roughness : %d\n", Scene_GetRoughness(scene));
+                    break;
                 default:
                     break;
                 }

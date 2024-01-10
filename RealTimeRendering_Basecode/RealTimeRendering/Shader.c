@@ -79,7 +79,7 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // Récupération de la dureté (roughness) associée au pixel
     MeshTexture *roughnessTex = Material_GetRoughness(material);
 
-    if (roughnessTex) {
+    if (roughnessTex && Scene_GetRoughness(globals->scene)) {
         // Recupération de la valeur du pixel dans la roughnessMap
         Vec3 roughness = MeshTexture_GetColorVec3(roughnessTex, Vec2_Set(u, v));
         in->gloss = 1-roughness.x;
@@ -129,6 +129,9 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     
     // Debug : normales V2 
     //return Vec4_From3(Vec3_Scale(Vec3_Add(in->normal, Vec3_One), 0.5f), 1.0f);
+
+    // Debug : Roughness
+    // return Vec4_From3(Vec3_Scale(Vec3_Set(1, 1, 1), in->gloss), 1.0f);
     //.............................................................................................
 
     // Retourne la couleur (albedo) associée au pixel dans la texture.

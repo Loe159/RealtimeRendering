@@ -34,6 +34,7 @@ typedef struct Scene_s
     FragmentShader *m_defaultFShader;
 
     bool m_wireframe;
+    bool m_roughness;
 } Scene;
 
 //-------------------------------------------------------------------------------------------------
@@ -117,6 +118,22 @@ INLINE void Scene_SetWireframe(Scene *scene, bool wireframe)
 INLINE bool Scene_GetWireframe(Scene *scene)
 {
     return scene->m_wireframe;
+}
+
+/// @brief Définit si la scène doit être rendue avec la roughness map.
+/// @param[in,out] scene la scène.
+/// @param roughness booléen indiquant si la scène doit être rendue avec la roughness map.
+INLINE void Scene_SetRoughness(Scene *scene, bool roughness)
+{
+    scene->m_roughness = roughness;
+}
+
+/// @brief Renvoie un booléen indiquant si la scène doit être rendue avec la roughness map.
+/// @param[in] scene la scène.
+/// @return Un booléen indiquant si la scène doit être rendue avec la roughness map.
+INLINE bool Scene_GetRoughness(Scene *scene)
+{
+    return scene->m_roughness;
 }
 
 /// @brief Calcul le rendu de la scène vue par sa caméra.
