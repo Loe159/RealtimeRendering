@@ -19,14 +19,30 @@ VShaderOut VertexShader_Base(VShaderIn *in, VShaderGlobals *globals)
     // Coordonnées homogènes de la normale (w = 0 car c'est une direction)
     Vec4 normal = Vec4_From3(in->normal, 0.0f);
 
+    // Coordonnées homogènes de la tangente (w = 0 car c'est une direction)
+    Vec4 tangent = Vec4_From3(in->tangent, 0.0f);
+
+    // Coordonnées homogènes de la bitangente (w = 0 car c'est une direction)
+    Vec4 bitangent = Vec4_From3(in->bitangent, 0.0f);
+
     // Transformation du sommet dans le repère caméra
     Vec4 vertexCamSpace = Mat4_MulMV(globals->objToView, vertex);
 
     // Projection du sommet dans le "clip space"
     Vec4 vertexClipSpace = Mat4_MulMV(globals->objToClip, vertex); // OBLIGATOIRE (ne pas modifier)
 
+    // Calcul de la bitangente
+    in->bitangent = Vec3_Cross(in->tangent, in->normal);
+
     // Transformation de la normale dans le repère monde
     normal = Mat4_MulMV(globals->objToWorld, normal);
+
+    // Transformation de la tangente dans le repère monde
+    tangent = Mat4_MulMV(globals->objToWorld, tangent);
+
+    // Transformation de la bitangente dans le repère monde
+    bitangent = Mat4_MulMV(globals->objToWorld, bitangent);
+
 
     // Obtention de la position du sommet à partir de la normale
     Vec3 worldPos = Vec3_From4(Mat4_MulMV(globals->objToWorld, vertex));
@@ -37,6 +53,8 @@ VShaderOut VertexShader_Base(VShaderIn *in, VShaderGlobals *globals)
     out.normal = Vec3_Normalize(Vec3_From4(normal));
     out.textUV = in->textUV;
     out.worldPos = worldPos;
+    out.tangent = Vec3_Normalize(Vec3_From4(tangent));
+    out.bitangent = Vec3_Normalize(Vec3_From4(bitangent));
 
     return out;
 }
@@ -55,7 +73,7 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     // - z : intensité du bleu  (entre 0 et 1)
     // - w : opacité            (entre 0 et 1)
 
-    // Récupération du matériau associé au pixel (albedo/normal map)
+    // Récupération du matériau associé au pixel (albedo/normal map/roughness map)
     Material *material = globals->material;
     assert(material);
 
@@ -90,8 +108,14 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     else in->gloss = 0.5;
 
     if (normalTex && Scene_GetNormal(globals->scene)) {
-        Vec3 normal = MeshTexture_GetColorVec3(normalTex, Vec2_Set(u, v));
-        in->normal = Vec3_Mul(in->normal, normal);
+        Mat3 matrixTBN = {
+            in->tangent.x, in->bitangent.x, in->normal.x,
+            in->tangent.y, in->bitangent.y, in->normal.y,
+            in->tangent.z, in->bitangent.z, in->normal.z,
+        };
+        Vec3 normalMap = MeshTexture_GetColorVec3(normalTex, Vec2_Set(u, v));
+
+        in->normal = Mat3_MulMV(matrixTBN, normalMap);
     }
 
     // Récupère les lumières de la scène
@@ -99,8 +123,6 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     Vec3 lightColor = Light_GetLightColor(light);
     Vec3 ambiant = Scene_GetAmbiantColor(globals->scene);
 
-    // Récupère la normale interpolée (non normalisée)
-    Vec3 normal = in->normal;
 
     // Application de la lumière ambiante à l'albedo
     albedo = Vec3_Mul(albedo, ambiant);

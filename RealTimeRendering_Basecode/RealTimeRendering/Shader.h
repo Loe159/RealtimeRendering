@@ -30,6 +30,9 @@ typedef struct VShaderIn_s
     /// @brief Position de la tangente associée au sommet dans le référentiel objet.
     Vec3 tangent;
 
+    /// @brief Position de la bitangente associée au sommet dans le référentiel objet.
+    Vec3 bitangent;
+
     /// @brief Coordonnées uv associées au sommet.
     Vec2 textUV;
 } VShaderIn;
@@ -57,7 +60,10 @@ typedef struct VShaderOut_s
     Vec3  worldPos;
 
     /// @brief Tangente associée au sommet exprimée dans le référentiel monde.
-    //Vec3  tangent;
+    Vec3  tangent;
+
+    /// @brief Bitangente associée au sommet exprimée dans le référentiel monde.
+    Vec3  bitangent;
 
 } VShaderOut;
 
@@ -99,7 +105,9 @@ typedef struct FShaderIn_s
     /// Nécessaire pour l'utilisation d'une "normal map".
     /// Le vecteur est obtenu par interpolation, donc n'est pas nécessairement unitaire
     /// ou perpendiculaire à la normale.
-    //Vec3 tangent;
+    Vec3 tangent;
+
+    Vec3 bitangent;
 } FShaderIn;
 
 typedef VShaderOut VertexShader(VShaderIn *in, VShaderGlobals *globals);
