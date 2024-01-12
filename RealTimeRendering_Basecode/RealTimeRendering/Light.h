@@ -84,5 +84,8 @@ INLINE float Light_GetLightIntensity(Light *light)
 /// @brief Calculate the ligthing coefficient depending on the light type and some parameters
 float CalculateLightingCoefficient(Light *light, FShaderIn *in, Vec3 cameraPos);
 
+/// @brief Crée une nouvelle lumière
+Light *Light_Create();
+
 /// @brief Libération de la mémoire
 void Light_Free(Light *light);

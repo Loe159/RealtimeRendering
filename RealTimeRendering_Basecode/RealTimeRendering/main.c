@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
     objectTransform = Mat4_MulMM(Mat4_GetScaleMatrix(scale), objectTransform);
     Object_SetLocalTransform(object, objectTransform);
 
-    // Obtention des lumières
-    Light *light = Scene_GetLight(scene);
+    // Obtention de la première lumière
+    Light *light = Scene_GetLights(scene)[0];
 
     // Lancement du temps global
     Timer_Start(g_time);
@@ -101,8 +101,17 @@ int main(int argc, char *argv[])
             switch (evt.type)
             {
             case SDL_MOUSEWHEEL:
-                if(evt.wheel.y > 0) camDistance = fmaxf(0, camDistance-1.f);
-                if(evt.wheel.y < 0) camDistance += 1.f;
+                // Controle de l'intensité de la lumière
+                if (keyboardState[SDL_SCANCODE_LCTRL]) {
+                    if(evt.wheel.y > 0) if (light->m_lightIntensity>0) light->m_lightIntensity --;
+                    if(evt.wheel.y < 0) light->m_lightIntensity ++;
+                }
+                // Controle du zoom
+                else {
+                    if(evt.wheel.y > 0) camDistance = fmaxf(0, camDistance-1.f);
+                    if(evt.wheel.y < 0) camDistance += 1.f;
+                }
+
                 break;
             case SDL_MOUSEMOTION:
                 // Turn around the 3D object
@@ -129,6 +138,10 @@ int main(int argc, char *argv[])
                 {
                 case SDL_SCANCODE_ESCAPE:
                     quit = true;
+                    break;
+                case SDL_SCANCODE_Q:
+                    light = Light_Create();
+                    Scene_AddLight(scene, light);
                     break;
                 case SDL_SCANCODE_SPACE:
                     Scene_SetWireframe(scene, !Scene_GetWireframe(scene));
@@ -200,9 +213,9 @@ int main(int argc, char *argv[])
     }
 
     Scene_Free(scene);
+    Scene_FreeLights(scene);
     Timer_Free(g_time);
     Window_Free(window);
-    Light_Free(light);
 
     Settings_QuitSDL();
 

@@ -119,8 +119,8 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
     }
 
     // Récupère les lumières de la scène
-    Light *light = Scene_GetLight(globals->scene);
-    Vec3 lightColor = Light_GetLightColor(light);
+    Light **lights = Scene_GetLights(globals->scene);
+    Vec3 lightColor = Light_GetLightColor(lights[0]);
     Vec3 ambiant = Scene_GetAmbiantColor(globals->scene);
 
 
@@ -129,9 +129,11 @@ Vec4 FragmentShader_Base(FShaderIn *in, FShaderGlobals *globals)
 
 
     // Application des lumières diffuse/spéculaires
-    float lightCoef = 1;
-    lightCoef = CalculateLightingCoefficient(light, in, globals->cameraPos);
-    lightCoef *= 50;
+    float lightCoef = 0;
+    for (int i = 0; i < globals->scene->m_lighCount; ++i) {
+        lightCoef += CalculateLightingCoefficient(lights[i], in, globals->cameraPos);
+    }
+
     albedo = Vec3_Scale(albedo, lightCoef);
     albedo = Vec3_Mul(albedo, lightColor);
 

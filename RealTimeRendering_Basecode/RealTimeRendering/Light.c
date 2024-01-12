@@ -42,10 +42,22 @@ float CalculateLightingCoefficient(Light *light, FShaderIn *in, Vec3 cameraPos) 
         break;
     }
 
+    lightCoef *= light->m_lightIntensity;
+
     return lightCoef;
 }
 
 void Light_Free(Light* light)
 {
     free(light);
+}
+
+Light *Light_Create()
+{
+    Light *light = (Light*) calloc(1, sizeof(Light));
+    Light_SetLightDirection(light, Vec3_Set(0.5, 1.0, 0.5));
+    Light_SetLightColor(light, Vec3_Set(0.7f, 0.6f, 0.5f));
+    Light_SetLightType(light, LIGHT_TYPE_DIFFUSE);
+    Light_SetLightIntensity(light, 10);
+    return light;
 }

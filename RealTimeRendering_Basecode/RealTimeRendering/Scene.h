@@ -27,7 +27,8 @@ typedef struct Scene_s
     int m_meshCount;
     int m_meshCapacity;
 
-    Light *m_light;
+    Light **m_lights;
+    int m_lighCount;
     Vec3 m_ambiantColor;
 
     VertexShader *m_defaultVShader;
@@ -83,6 +84,9 @@ Object *Scene_GetRoot(Scene *scene);
 /// @param scene la scène.
 /// @return La caméra de la scène.
 Camera *Scene_GetCamera(Scene *scene);
+
+/// @brief Ajoute une lumière à la scène
+void Scene_AddLight(Scene *scene, Light *light);
 
 //-------------------------------------------------------------------------------------------------
 // Paramètres de rendu
@@ -158,15 +162,13 @@ INLINE bool Scene_GetNormal(Scene *scene)
 void Scene_Render(Scene *scene);
 
 //-------------------------------------------------------------------------------------------------
-INLINE Light *Scene_GetLight(Scene *scene)
+INLINE Light **Scene_GetLights(Scene *scene)
 {
-    return scene->m_light;
+    return scene->m_lights;
 }
 
-INLINE void Scene_SetLight(Scene *scene, Light *light)
-{
-    scene->m_light = light;
-}
+void Scene_FreeLights(Scene *scene);
+
 
 INLINE void Scene_SetAmbiantColor(Scene *scene, Vec3 color)
 {

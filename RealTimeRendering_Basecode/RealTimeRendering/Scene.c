@@ -43,14 +43,12 @@ Scene *Scene_New(Window *window)
 
     scene->m_camera = camera;
 
-    // Définit les lumières
-    Light *light = (Light*) calloc(1, sizeof(Light));
-    Scene_SetLight(scene, light);
 
-    Light_SetLightDirection(light, Vec3_Set(0.5, 1.0, 0.5));
-    Light_SetLightColor(light, Vec3_Set(0.7f, 0.6f, 0.5f));
-    Light_SetLightType(light, LIGHT_TYPE_DIFFUSE);
-    Light_SetLightIntensity(light, 10);
+    scene->m_lights = (Light**) calloc(1, sizeof(Light*));
+
+    // Définit les lumières
+    Light *light = Light_Create();
+    Scene_AddLight(scene, light);
     Scene_SetAmbiantColor(scene, Vec3_Set(0.12f, 0.14f, 0.24f));
 
     // Définit les shaders par défaut
@@ -201,4 +199,18 @@ void Scene_Render(Scene *scene)
     Renderer_ResetDepthBuffer(scene->m_renderer);
     Renderer_Fill(scene->m_renderer, backgroundColor);
     Scene_RenderObjectRec(scene, Scene_GetRoot(scene));
+}
+
+void Scene_AddLight(Scene *scene, Light *light) {
+    scene->m_lighCount++;
+    scene->m_lights = realloc(scene->m_lights, scene->m_lighCount * sizeof(scene->m_lights));
+    scene->m_lights[scene->m_lighCount-1] = light;
+    printf("Light added - total %d\n", scene->m_lighCount);
+}
+
+void Scene_FreeLights(Scene *scene) {
+    for (int i = 0; i < scene->m_lighCount; ++i) {
+        Light_Free(scene->m_lights[i]);
+    }
+    free(scene->m_lights);
 }
